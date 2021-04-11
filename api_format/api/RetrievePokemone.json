@@ -1,0 +1,26 @@
+{
+    "number": "001",
+    "name": "Bulbasaur",
+    "types": [
+        "Grass",
+        "Poison"
+    ],
+    "evolutions": [
+        {
+            "number": "002",
+            "name": "Ivysaur",
+            "types": [
+                "Poison",
+                "Grass"
+            ]
+        },
+        {
+            "number": "003",
+            "name": "Venusaur",
+            "types": [
+                "Poison",
+                "Grass"
+            ]
+        }
+    ]
+}

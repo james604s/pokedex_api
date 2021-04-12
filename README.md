@@ -9,10 +9,12 @@
     mysqlclient==2.0.3
     numpy==1.20.2
     pandas==1.2.3
+  <br />
+ex: 127.0.0.1:8000  <br />
+
 
 # API  <br />
 ## Retrieve a Pokemon by identifier  <br />
-ex: 127.0.0.1:8000  <br />
 
 GET /api/pokemon/{poke_number}/ <br />
 Get a pokemon by its number.  <br />

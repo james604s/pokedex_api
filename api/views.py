@@ -2,7 +2,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from api.services import pokemon_service
+from api.services import (
+                            pokemon_service,
+                            pokemon_filter_service
+                        )
 
 from utils.response import ErrorResponse
 
@@ -52,14 +55,28 @@ class PokemonBasicCRUDView(APIView):
             return ErrorResponse(traceback.format_exc())
 
 class PokemonFilterTypeView(APIView):
-    def get(self, request):
-        return
+    def get(self, request, poke_type):
+        try:
+            result_json = pokemon_filter_service.get_pokemon_data_by_type(poke_type)
+            return Response(result_json)
+        except Exception as e:
+            return ErrorResponse(traceback.format_exc())
 
 class PokemonEvosView(APIView):
-    def post(self, request):
-        return
+    def post(self, request, poke_number):
+        try:
+            poke_evo_number= request.data.get("poke_evo_number")
+            result_json = pokemon_evos_service.create_evos_pokemon_data(poke_number, poke_evo_number)
+            return Response(result_json)
+        except Exception as e:
+            return ErrorResponse(traceback.format_exc())
 
-    def delete(self, request):
+    def delete(self, request, poke_number, poke_evo_number):
+        try:
+            result_json = pokemon_evos_service.delete_evos_pokemon_data(poke_number, poke_evo_number)
+            return Response(result_json)
+        except Exception as e:
+            return ErrorResponse(traceback.format_exc())
         return
 # class CreatePokemonView(APIView):
 #     def post(self, request):

@@ -2,7 +2,7 @@ from api.models import *
 
 class PokeExtractors:
     def get_pokemon_by_identifier(self, poke_number):
-        """"""
+        """"""            
         # name = PokeInfo.objects.get(poke_number=poke_number).poke_name
         name = list(PokeInfo.objects.filter(poke_number=poke_number).values("poke_name"))
         if name:
@@ -25,4 +25,22 @@ class PokeExtractors:
                 return evolutions_info
         return []
 
+    def get_pokemon_by_type(self, poke_type):
+        try:
+            poke_origin_id = PokeType.objects.filter(poke_type=poke_type) \
+                                            .values("poke_original_id") \
+                                            .order_by("poke_original_id")
+            return poke_origin_id
+        except Exception as e:
+            return []
+
+    def get_pokemon_by_id(self, poke_id):
+        try:
+            poke_info = PokeInfo.objects.filter(id=poke_id) \
+                                        .values("poke_number",
+                                                "poke_name") \
+                                        
+            return poke_info
+        except Exception as e:
+            return []
 pokemon_info = PokeExtractors()

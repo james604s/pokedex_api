@@ -2,7 +2,7 @@ from api.extractors import pokemon_info
 from api.models import *
 
 class PokemonService:
-    def get_pokemon_data(self, poke_number):
+    def get_pokemon_data(self, poke_number):            
         result_json = pokemon_info.get_pokemon_by_identifier(poke_number)
         evolutions_info = pokemon_info.get_pokemon_evolutions_info(poke_number)
         if result_json:
@@ -66,12 +66,39 @@ class PokemonService:
 pokemon_service = PokemonService()
 
 class PokemonFilterService:
-    def get_pokemon_data_by_type(self):
-        return
+    def get_pokemon_data_by_type(self, poke_type):
+        poke_id_list = pokemon_info.get_pokemon_by_type(poke_type)
+        if poke_id_list:
+            poke_info_list = list()
+            poke_info_list = [pokemon_info.get_pokemon_by_id(item['poke_original_id'])[0] for item in poke_id_list]
+            result_json = {poke_type: poke_info_list}
+            return result_json
+        return {"message": f"This type does not exist."}
+pokemon_filter_service = PokemonFilterService()
 
 class PokemonEvosService:
-    def create_evos_pokemon_data(self):
-        return
+    def create_evos_pokemon_data(self, poke_number, poke_evo_number):
+        poke_info = PokeInfo.objects.filter(poke_number=poke_number)
+        poke_evo_info = PokeInfo.objects.filter(poke_number=poke_evo_number)
+        if poke_info:
+            if poke_evo_info:
+                poke_info.evos.create(poke_evo_number=poke_evo_number)
+                result_json = pokemon_info.get_pokemon_by_identifier(poke_number)
+                evolutions_info = pokemon_info.get_pokemon_evolutions_info(poke_number)
+                result_json.update({"evolutions":evolutions_info})
+                return result_json
+            return {"message":f"This pokemon number:{poke_number}'s evolutions {poke_evo_number} does not exist, please create info data first. "}
+        return {"message":f"This pokemon number:{poke_number} does not exist."}
 
-    def delete_evos_pokemon_data(self):
-        return
+    def delete_evos_pokemon_data(self, poke_number, poke_evo_number):
+        poke_info = PokeInfo.objects.filter(poke_number=poke_number)
+        poke_evo_info = PokeInfo.objects.filter(poke_number=poke_evo_number)
+        if poke_info:
+            if poke_evo_info:
+                poke_info_id = poke_info.values("id")[0]['id']
+                PokeEvo.objects.filter(poke_original_id = poke_info_id, poke_evo=poke_evo_number).delete()
+                return {"message": f"This pokemon number:{poke_number}'s evolution {poke_evo_number} is delete."}
+            return {"message":f"This pokemon number:{poke_number}'s evolutions {poke_evo_number} does not exist."}
+        return {"message":f"This pokemon number:{poke_number} does not exist."}
+
+pokemon_evos_service = PokemonEvosService()

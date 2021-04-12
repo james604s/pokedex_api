@@ -77,7 +77,7 @@ class PokemonEvosView(APIView):
             return Response(result_json)
         except Exception as e:
             return ErrorResponse(traceback.format_exc())
-        return
+        
 # class CreatePokemonView(APIView):
 #     def post(self, request):
 #         try:

@@ -55,7 +55,7 @@ class PokemonService:
         Note that a deleted Pokemon should not be evolution of other Pokemon.
         """
         if PokeInfo.objects.filter(poke_number=poke_number).exists():
-            if PokeEvo.objects.filter(poke_number=poke_number).exists():
+            if PokeEvo.objects.filter(poke_evo=poke_number).exists():
                 return {"message": f"This pokemon number:{poke_number} is other pokemon's evolution, can not delete."}
             poke_info = PokeInfo.objects.get(poke_number=poke_number)
             PokeType.objects.filter(poke_original_id=poke_info.id).delete()
@@ -78,11 +78,11 @@ pokemon_filter_service = PokemonFilterService()
 
 class PokemonEvosService:
     def create_evos_pokemon_data(self, poke_number, poke_evo_number):
-        poke_info = PokeInfo.objects.filter(poke_number=poke_number)
+        poke_info = PokeInfo.objects.get(poke_number=poke_number)
         poke_evo_info = PokeInfo.objects.filter(poke_number=poke_evo_number)
         if poke_info:
             if poke_evo_info:
-                poke_info.evos.create(poke_evo_number=poke_evo_number)
+                poke_info.evos.create(poke_evo=poke_evo_number)
                 result_json = pokemon_info.get_pokemon_by_identifier(poke_number)
                 evolutions_info = pokemon_info.get_pokemon_evolutions_info(poke_number)
                 result_json.update({"evolutions":evolutions_info})

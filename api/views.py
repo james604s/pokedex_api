@@ -4,7 +4,8 @@ from rest_framework import status
 
 from api.services import (
                             pokemon_service,
-                            pokemon_filter_service
+                            pokemon_filter_service,
+                            pokemon_evos_service
                         )
 
 from utils.response import ErrorResponse
@@ -50,7 +51,7 @@ class PokemonBasicCRUDView(APIView):
     def delete(self, request, poke_number):
         try:
             result_json = pokemon_service.delete_pokemon_data(poke_number)
-            return Response({})
+            return Response(result_json)
         except Exception as e:
             return ErrorResponse(traceback.format_exc())
 

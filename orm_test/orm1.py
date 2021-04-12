@@ -104,3 +104,8 @@ test2.pokeevo_set.all()
 a = PokeInfo.objects.filter(poke_number="008").exists()
 
 PokeInfo.objects.get(poke_number="001")
+
+##select_related
+a = PokeType.objects.select_related('poke_original')
+
+PokeInfo.objects.select_related('poke_original')

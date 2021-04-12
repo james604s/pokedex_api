@@ -1,0 +1,16 @@
+{
+    "Grass": [
+        {
+            "poke_number": "001",
+            "poke_name": "Bulbasaur"
+        },
+        {
+            "poke_number": "002",
+            "poke_name": "Ivysaur"
+        },
+        {
+            "poke_number": "003",
+            "poke_name": "Venusaur"
+        }
+    ]
+}
